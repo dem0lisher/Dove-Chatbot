@@ -9,6 +9,18 @@
 		<link rel="stylesheet" href="./css/index.css">
 	</head>
 	<body>
-		<img src="./img/home" alt="Home image">
+		<div id="splash-screen"></div>
+		<section class="flex-column">
+			<div id="chat-output-section">
+			</div>
+			<div id="chat-input-section" class="flex-row">
+				<form id="user-input-form" class="flex-row flex-center">
+					<input id="user-input" type="text" name="user-input" placeholder="Type your message here...">
+					<button id="input-submit-btn" type="button">Send</button>
+				</form>
+			</div>
+		</section>
+		<script src="./js/jquery.min.js" type="text/javascript"></script>
+		<script src="./js/index.js" type="text/javascript"></script>
 	</body>
 </html>
