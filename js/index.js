@@ -1,16 +1,32 @@
 $(document).ready(function(){
 	
-	// if(navigator.geolocation){
-	// 	navigator.geolocation.getCurrentPosition(
-	// 		function(){
-	// 			console.log('geolocation not enabled in browser');
-	// 		},function(){
-	// 			console.log('geolocation not enabled in browser');
-	// 		}
-	// 	);
-	// }else{
-	// 	console.log('geolocation not enabled in browser');
-	// }
+	function getUserLocation(){
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(
+				function(position){
+					$.ajax({
+						url: 'https://api.openweathermap.org/data/2.5/weather',
+						type: 'GET',
+						data: {appid: '2ca846983b4bffca4a1f3aaa3e9465b5', lat: position.coords.latitude, lon: position.coords.longitude}
+					}).then(
+						function(data){
+							var response = getBotMsgTemplate('Hi, it is ' + (parseFloat(data.main.temp) - 273.15) + ' degrees outside in ' + data.name + '. How is your hair feeling?');
+							sendResponse(response, false);
+						},
+						function(){
+							console.log('Weather API failed');
+						}
+					)
+				},
+				function(){
+					console.log('Geolocation not enabled in browser');
+				}
+			);
+		}
+		else{
+			console.log('Geolocation not enabled in browser');
+		}
+	}
 
 	// var increaseQuesNo = (function(){
 	// 	var questionNo = 0;
@@ -23,8 +39,11 @@ $(document).ready(function(){
 	load();
 
 	function load(){
+		getUserLocation();
 		setTimeout(function(){
 			$('#splash-screen').fadeOut(1000);
+			var indicator = getTypingIndicator();
+			$('#chat-output-section').append(indicator);
 		}, 2000);
 		$('#input-submit-btn').click(function(e){
 			var answer = $('#user-input').val();
@@ -34,8 +53,6 @@ $(document).ready(function(){
 			}
 		});
 		questionNo = 1;
-		var response = getBotMsgTemplate('Hi how are you');
-		sendResponse(response, false);
 	}
 
 	function getTypingIndicator(){
