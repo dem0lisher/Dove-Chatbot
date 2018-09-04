@@ -34,22 +34,13 @@ $(document).ready(function(){
 			}
 		});
 		questionNo = 1;
-		var chatOutputSection = $('#chat-output-section'), response = '';
-		response = getBotMsgTemplate('Hi how are you');
-		sendResponse(chatOutputSection, response);
+		var response = getBotMsgTemplate('Hi how are you');
+		sendResponse(response, false);
 	}
 
-	function postAnswer(answer){
-		var chatOutputSection = $('#chat-output-section');
-		var post = getUserMsgTemplate(answer);
-		chatOutputSection.append(post);
-		chatOutputSection.scrollTop(chatOutputSection.height());
-		$('#user-input').val('');
-	}
-
-	function sendResponse(chatOutputSection, response){
-		chatOutputSection.append(response);
-		chatOutputSection.scrollTop(chatOutputSection.height());
+	function getTypingIndicator(){
+		var template = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+		return template;
 	}
 
 	function getUserMsgTemplate(msg){
@@ -86,6 +77,33 @@ $(document).ready(function(){
 		return template;
 	}
 
+	function postAnswer(answer){
+		var chatOutputSection = $('#chat-output-section');
+		var post = getUserMsgTemplate(answer);
+		chatOutputSection.append(post);
+		chatOutputSection.scrollTop(chatOutputSection.height());
+		$('#user-input').val('');
+		setTimeout(function(){
+			var indicator = getTypingIndicator();
+			chatOutputSection.append(indicator);
+			chatOutputSection.scrollTop(chatOutputSection.height());
+		}, 500);
+	}
+
+	function sendResponse(response, showTypingIndicator){
+		var chatOutputSection = $('#chat-output-section');
+		$('.typing-indicator').remove();
+		chatOutputSection.append(response);
+		chatOutputSection.scrollTop(chatOutputSection.height());
+		if(showTypingIndicator){
+			setTimeout(function(){
+				var indicator = getTypingIndicator();
+				chatOutputSection.append(indicator);
+				chatOutputSection.scrollTop(chatOutputSection.height());
+			}, 500);
+		}
+	}
+
 	function handleInput(e, answer){
 		e.preventDefault();
 		var chatOutputSection = $('#chat-output-section');
@@ -95,17 +113,17 @@ $(document).ready(function(){
 					var response1 = getBotMsgTemplate('How many times do you wash your hair?');
 					questionNo++;
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, false);
 					}, 2000);
 				}
 				else if(answer === 'good'){
 					var response1 = getBotMsgTemplate('That is great!');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, true);
 					}, 2000);
 					var response2 = getBotMsgTemplate('I recommend you use dove oxygen moisture for even better results.');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response2);
+						return sendResponse(response2, true);
 					}, 4000);
 					var response3 = `
 						<div class="message flex-row flex-start">
@@ -113,17 +131,17 @@ $(document).ready(function(){
 						</div>
 					`;
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response3);
+						return sendResponse(response3, false);
 					}, 6000);
 				}
 				else{
 					var response1 = getBotMsgTemplate('I\'m sorry I didn\'t get that');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, true);
 					}, 2000);
 					var response2 = getBotMsgTemplate('Hi how are you');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response2);
+						return sendResponse(response2, false);
 					}, 4000);
 				}
 			break;
@@ -131,41 +149,48 @@ $(document).ready(function(){
 				if(answer <= 7){
 					var response1 = getBotMsgTemplate('Washing your hair ' + answer + ' times per week when it is oily is not healthy');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, true);
 					}, 2000);
 					var response2 = getBotMsgTemplate('I recommend you use dove oil control shampoo');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response2);
+						return sendResponse(response2, true);
 					}, 4000);
 					var response3 = getCarousalTemplate();
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response3);
+						return sendResponse(response3, false);
 					}, 6000);
 				}
 				else if(answer > 7){
 					var response1 = getBotMsgTemplate('Washing your hair ' + answer + ' times per week when it is dull is not healthy');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, true);
 					}, 2000);
 					var response2 = getBotMsgTemplate('I recommend you use dove daily shine shampoo');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response2);
+						return sendResponse(response2, true);
 					}, 4000);
 					var response3 = getCarousalTemplate();
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response3);
+						return sendResponse(response3, false);
 					}, 6000);
 				}
 				else{
 					var response1 = getBotMsgTemplate('I\'m sorry I didn\'t get that');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response1);
+						return sendResponse(response1, true);
 					}, 2000);
 					var response2 = getBotMsgTemplate('How many times do you wash your hair?');
 					setTimeout(function(){
-						return sendResponse(chatOutputSection, response2);
+						return sendResponse(response2, false);
 					}, 4000);
 				}
+			break;
+			default:
+				var response1 = getBotMsgTemplate('I\'m sorry I didn\'t get that');
+				questionNo = 1;
+				setTimeout(function(){
+					return sendResponse(response1, true);
+				}, 2000);
 			break;
 		}
 	}
