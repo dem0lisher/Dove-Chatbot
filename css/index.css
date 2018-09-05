@@ -72,6 +72,7 @@ section{
 	padding: 10px 0;
 }
 .bot-msg, .user-msg{
+	position: relative;
 	padding: 17px 20px;
 	min-width: 150px;
 	font-size: 14px;
@@ -87,6 +88,29 @@ section{
 .user-msg{
 	background-color: #00357D;
 	color: #fff;
+}
+.bot-msg:after, .user-msg:after{
+	content: '';
+	position: absolute;
+	border: 0px solid;
+	display: block;
+	width: 37px;
+	height: 63px;
+	background-color: transparent;
+	border-bottom-left-radius: 50%;
+	border-bottom-right-radius: 50%;
+}
+.bot-msg:after{
+	bottom: -3px;
+	left: -45px;
+	box-shadow: 2px 16px 0px -4px #fff;
+	transform: scaleX(-1) rotate(70deg);
+}
+.user-msg:after{
+	top: -5px;
+	right: -45px;
+	box-shadow: 2px 16px 0px -4px #00357D;
+	transform: rotate(73deg);
 }
 #carousal-ctn{
 	width: 100%;

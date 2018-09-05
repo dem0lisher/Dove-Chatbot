@@ -1,41 +1,6 @@
 $(document).ready(function(){
-	
-	function getUserLocation(){
-		if(navigator.geolocation){
-			navigator.geolocation.getCurrentPosition(
-				function(position){
-					$.ajax({
-						url: 'https://api.openweathermap.org/data/2.5/weather',
-						type: 'GET',
-						data: {appid: '2ca846983b4bffca4a1f3aaa3e9465b5', lat: position.coords.latitude, lon: position.coords.longitude}
-					}).then(
-						function(data){
-							var response = getBotMsgTemplate('Hi, it is ' + (parseFloat(data.main.temp) - 273.15) + ' degrees outside in ' + data.name + '. How is your hair feeling?');
-							sendResponse(response, false);
-						},
-						function(){
-							console.log('Weather API failed');
-						}
-					)
-				},
-				function(){
-					console.log('Geolocation not enabled in browser');
-				}
-			);
-		}
-		else{
-			console.log('Geolocation not enabled in browser');
-		}
-	}
 
-	// var increaseQuesNo = (function(){
-	// 	var questionNo = 0;
-	// 	return function(){
-	// 		questionNo++;
-	// 	}
-	// })();
-
-	var questionNo;
+	var questionNo, userLocation = '', userLocationTemp = 0;
 	load();
 
 	function load(){
@@ -53,6 +18,42 @@ $(document).ready(function(){
 			}
 		});
 		questionNo = 1;
+	}
+
+	function getUserLocation(){
+		if(navigator.geolocation){
+			navigator.geolocation.getCurrentPosition(
+				function(position){
+					$.ajax({
+						url: 'https://api.openweathermap.org/data/2.5/weather',
+						type: 'GET',
+						data: {appid: '2ca846983b4bffca4a1f3aaa3e9465b5', lat: position.coords.latitude, lon: position.coords.longitude}
+					}).then(
+						function(data){
+							if(data.main && data.main.temp && data.name){
+								userLocation = data.name;
+								userLocationTemp = parseFloat(data.main.temp) - 273.15;
+								var response = getBotMsgTemplate('Hi, it is ' + userLocationTemp + ' degrees outside in ' + userLocation + '. How is your hair feeling?');
+							}
+							else{
+								var response = getBotMsgTemplate('Hi. How is your hair feeling?');	
+							}
+							sendResponse(response, false);
+						},function(){
+							var response = getBotMsgTemplate('Hi. How is your hair feeling?');
+							sendResponse(response, false);
+						}
+					)
+				},function(){
+					var response = getBotMsgTemplate('Hi. How is your hair feeling?');
+					sendResponse(response, false);
+				}
+			);
+		}
+		else{
+			var response = getBotMsgTemplate('Hi. How is your hair feeling?');
+			sendResponse(response, false);
+		}
 	}
 
 	function getTypingIndicator(){
@@ -127,8 +128,8 @@ $(document).ready(function(){
 		switch(questionNo){
 			case 1:
 				if(answer === 'oily' || answer === 'dull'){
-					var response1 = getBotMsgTemplate('How many times do you wash your hair?');
 					questionNo++;
+					var response1 = getBotMsgTemplate('How many times do you wash your hair?');
 					setTimeout(function(){
 						return sendResponse(response1, false);
 					}, 2000);
@@ -156,7 +157,12 @@ $(document).ready(function(){
 					setTimeout(function(){
 						return sendResponse(response1, true);
 					}, 2000);
-					var response2 = getBotMsgTemplate('Hi how are you');
+					if(userLocationTemp && userLocation){
+						var response2 = getBotMsgTemplate('Hi, it is ' + userLocationTemp + ' degrees outside in ' + userLocation + '. How is your hair feeling?');
+					}
+					else{
+						var response2 = getBotMsgTemplate('Hi. How is your hair feeling?');
+					}
 					setTimeout(function(){
 						return sendResponse(response2, false);
 					}, 4000);
@@ -164,6 +170,7 @@ $(document).ready(function(){
 			break;
 			case 2:
 				if(answer <= 7){
+					questionNo++;
 					var response1 = getBotMsgTemplate('Washing your hair ' + answer + ' times per week when it is oily is not healthy');
 					setTimeout(function(){
 						return sendResponse(response1, true);
@@ -178,6 +185,7 @@ $(document).ready(function(){
 					}, 6000);
 				}
 				else if(answer > 7){
+					questionNo++;
 					var response1 = getBotMsgTemplate('Washing your hair ' + answer + ' times per week when it is dull is not healthy');
 					setTimeout(function(){
 						return sendResponse(response1, true);
@@ -203,13 +211,21 @@ $(document).ready(function(){
 				}
 			break;
 			default:
-				var response1 = getBotMsgTemplate('I\'m sorry I didn\'t get that');
 				questionNo = 1;
+				var response1 = getBotMsgTemplate('I\'m sorry I didn\'t get that');
 				setTimeout(function(){
 					return sendResponse(response1, true);
 				}, 2000);
+				if(userLocationTemp && userLocation){
+					var response2 = getBotMsgTemplate('Hi, it is ' + userLocationTemp + ' degrees outside in ' + userLocation + '. How is your hair feeling?');
+				}
+				else{
+					var response2 = getBotMsgTemplate('Hi. How is your hair feeling?');
+				}
+				setTimeout(function(){
+					return sendResponse(response2, false);
+				}, 4000);
 			break;
 		}
 	}
-
 });
