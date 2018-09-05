@@ -8,11 +8,10 @@ $(document).ready(function(){
 		setTimeout(function(){
 			$('#splash-screen').fadeOut(1000);
 		}, 2000);
-		$('#input-submit-btn').click(function(e){
-			var answer = $('#user-input').val();
-			if(answer){
-				postAnswer(answer);
-				handleInput(e, answer.toLowerCase());
+		$('#input-submit-btn').click(handleFormSubmit);
+		$('#user-input').keypress(function(e){
+			if(e.which === 13){
+				handleFormSubmit(e);
 			}
 		});
 		questionNo = 1;
@@ -53,6 +52,14 @@ $(document).ready(function(){
 		else{
 			var response = getBotMsgTemplate('Hi. How is your hair feeling?');
 			sendResponse(response, false);
+		}
+	}
+
+	function handleFormSubmit(e){
+		var answer = $('#user-input').val();
+		if(answer){
+			postAnswer(answer);
+			handleInput(e, answer.toLowerCase());
 		}
 	}
 
