@@ -1,0 +1,19 @@
+{
+  "name": "dove-chatbot",
+  "version": "1.0.0",
+  "description": "Dove Ad Chatbot",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dem0lisher/Dove-Chatbot.git"
+  },
+  "keywords": [
+    "Dove",
+    "Chatbot"
+  ],
+  "author": "Aadhar Jain",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
