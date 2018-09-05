@@ -11,6 +11,9 @@
     "Dove",
     "Chatbot"
   ],
+  "scripts": {
+    "start": "node server.js"
+  },
   "author": "Aadhar Jain",
   "license": "ISC",
   "dependencies": {
