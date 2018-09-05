@@ -7,8 +7,6 @@ $(document).ready(function(){
 		getUserLocation();
 		setTimeout(function(){
 			$('#splash-screen').fadeOut(1000);
-			var indicator = getTypingIndicator();
-			$('#chat-output-section').append(indicator);
 		}, 2000);
 		$('#input-submit-btn').click(function(e){
 			var answer = $('#user-input').val();
@@ -24,6 +22,8 @@ $(document).ready(function(){
 		if(navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(
 				function(position){
+					var indicator = getTypingIndicator();
+					$('#chat-output-section').append(indicator);
 					$.ajax({
 						url: 'https://api.openweathermap.org/data/2.5/weather',
 						type: 'GET',
@@ -32,7 +32,7 @@ $(document).ready(function(){
 						function(data){
 							if(data.main && data.main.temp && data.name){
 								userLocation = data.name;
-								userLocationTemp = parseFloat(data.main.temp) - 273.15;
+								userLocationTemp = Math.round(parseFloat(data.main.temp) - 273.15);
 								var response = getBotMsgTemplate('Hi, it is ' + userLocationTemp + ' degrees outside in ' + userLocation + '. How is your hair feeling?');
 							}
 							else{
