@@ -145,7 +145,7 @@ $(document).ready(function(){
 					}, 4000);
 					var response3 = `
 						<div class="message flex-row flex-start">
-							<iframe src="https://www.youtube.com/watch?v=wsoN2C0JzWk&autoplay=1" width="200px" height="200px"></iframe>
+							<iframe src="https://www.youtube.com/embed/wsoN2C0JzWk?autoplay=1" width="88%" frameborder="0" allowfullscreen></iframe>
 						</div>
 					`;
 					setTimeout(function(){
