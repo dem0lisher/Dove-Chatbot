@@ -61,13 +61,7 @@ section{
 	height: 67%;
 	overflow-y: scroll;
 	width: 100%;
-	padding: 0 35px;
-}
-#chat-output-section::-webkit-scrollbar{
-	width: 7px;
-}
-#chat-output-section::-webkit-scrollbar-thumb{
-	border-radius: 10px;
+	padding: 0 45px;
 }
 .message, #carousal-ctn{
 	padding: 10px 0;
@@ -93,25 +87,27 @@ section{
 .bot-msg:after, .user-msg:after{
 	content: '';
 	position: absolute;
-	border: 0px solid;
-	display: block;
-	width: 37px;
-	height: 63px;
 	background-color: transparent;
-	border-bottom-left-radius: 50%;
-	border-bottom-right-radius: 50%;
 }
 .bot-msg:after{
 	bottom: -3px;
-	left: -45px;
-	box-shadow: 2px 16px 0px -4px #fff;
-	transform: scaleX(-1) rotate(70deg);
+	left: -40px;
+	box-shadow: 1px 15px 0px -4px #fff;
+	transform: scaleX(-1) rotate(84deg);
+	width: 37px;
+	height: 43px;
+	border-bottom-left-radius: 12%;
+	border-bottom-right-radius: 48%;
 }
 .user-msg:after{
-	top: -5px;
-	right: -45px;
-	box-shadow: 2px 16px 0px -4px #00357D;
-	transform: rotate(73deg);
+	bottom: 2px;
+	right: -39px;
+	box-shadow: 1px 14px 0px -4px #00357D;
+	transform: rotate(76deg);
+	width: 42px;
+	height: 42px;
+	border-bottom-left-radius: 40%;
+	border-bottom-right-radius: 43%;
 }
 #carousal-ctn{
 	width: 100%;
